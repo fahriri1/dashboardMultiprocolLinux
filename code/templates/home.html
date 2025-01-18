@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- General style -->
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Home style -->
+    <link rel="stylesheet" href="/static/asset/pages/home/home.css">
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- AdminLTE -->
+    <link rel="stylesheet" href="/static/asset/AdminLTE-3.2.0/dist/css/adminlte.css">
+    <!-- <link href="{{ url_for('static', filename='/asset/AdminLTE-3.2.0/dist/css/adminlte.css') }}" rel="stylesheet"> -->
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <title>Multiprotocol_IOT</title>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+        <!-- Navbar Side -->
+        <nav class=" main-header navbar navbar-expand-lg navbar-custom">
+            <div class="container-fluid">
+                <button class="btn btn-outline-light" id="toggleSidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <a href="#" class="brand-link">
+                <i class="fas fa-light fa-circle-user" style="margin-left: 20px; margin-right: 10px;"></i>
+                <h4 class="brand-title">Multiprotocol</h4>
+                <p class="brand-desc">Gateway</p>
+            </a>
+
+            <div class="sidebar">
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <il class="nav-item">
+                            <a class="nav-link custom-nav-link" href="#">
+                                <i class="nav-icon fas fa-light fa-sitemap"></i>
+                                <p>Gateway</p>
+                            </a>
+                        </il>
+                        <il class="nav-item">
+                            <a href="/mqtt" class="nav-link custom-nav-link">
+                                <i class="nav-icon fas fa-solid fa-database"></i>
+                                <p>MQTT</p>
+                            </a>
+                        </il>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <div class="content-wrapper">
+            <!-- Head Content -->
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-7">
+                        <h1 class="title-header">Multiprocol</h1>
+                        <h2 class="desc-header">Konfigurasi multiprocol gateway IoT</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Body Content -->
+            <section class="content">
+                <div class="container-fluid">
+
+                    <!-- Bluetooth card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- Card title -->
+                            <div class="row ml-2">
+                                <i class="fa-brands fa-bluetooth mr-1 mt-1"></i>
+                                <p class="title-card mr-4">Bluetooth</p>
+                                <p class="status-card" id="ble-card">Not Active</p>
+                            </div>
+
+                            <div class="card-message"></div>
+                        </div>
+                    </div>
+
+                    <!-- LoRa card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- Card title -->
+                            <div class="row ml-2">
+                                <i class="fa-solid fa-tower-broadcast mr-2 mt-1"></i>
+                                <p class="title-card mr-4">LoRa</p>
+                                <p class="status-card" id="lora-card">Not Active</p>
+                            </div>
+
+                            <div class="card-message"></div>
+                        </div>
+                    </div>
+
+                    <!-- WiFi card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- Card title -->
+                            <div class="row ml-2">
+                                <i class="fa-solid fa-wifi mr-2 mt-1"></i>
+                                <p class="title-card mr-4">WiFi</p>
+                                <p class="status-card">Not Active</p>
+                            </div>
+
+                            <div class="card-message"></div>
+                        </div>
+                    </div>
+
+                    <!-- MQTT card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <!-- Card title -->
+                            <div class="row ml-2">
+                                <i class="fa-solid fa-database mr-2 mt-1"></i>
+                                <p class="title-card mr-4">MQTT</p>
+                                <p class="status-card" id="mqtt-card">Not Active</p>
+                            </div>
+
+                            <div class="card-message"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer class="main-footer">
+            <strong> Copyright &copy; 2025</strong>
+        </footer>
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script>
+
+<!-- Script for lora connection -->
+<script>
+    const socket=io();
+    socket.emit('init_lora');
+
+    socket.on('lora_status', function(data){
+        const state = data.status;
+        if(state){
+            document.getElementById('lora-card').style.backgroundColor = "green";
+            document.getElementById('lora-card').textContent = "Connected";
+        }else{
+            documen.getElementById('lora-card').style.backgroundColor = "red";
+            document.getElementById('lora-card').textContent = "Not Connected";
+        }
+    })
+</script>
+
+<!-- Script for ble connection -->
+<script>
+    socket.emit('init_ble');
+
+    socket.on('ble_status', function(data){
+        const state = data.status;
+        if(state){
+            document.getElementById('ble-card').style.backgroundColor = "green";
+            document.getElementById('ble-card').textContent = "Connected";
+        }else{
+            documen.getElementById('ble-card').style.backgroundColor = "red";
+            document.getElementById('ble-card').textContent = "Not Connected";
+        }
+    })
+</script>
+
+<!-- Script for mqtt connection -->
+<script>
+    socket.emit('init');
+
+    socket.on('mqtt_status', function(data){
+        const state = data.status;
+        if(state){
+            document.getElementById('mqtt-card').style.backgroundColor = "green";
+            document.getElementById('mqtt-card').textContent = "Connected";
+        }else{
+            documen.getElementById('mqtt-card').style.backgroundColor = "red";
+            document.getElementById('mqtt-card').textContent = "Not Connected";
+        }
+    })
+</script>
+
+<!-- Script for sidebar -->
+<script>
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function() {
+        // Remove 'active' class from all links
+        document.querySelectorAll('.nav-link').forEach(item => item.classList.remove('active'));
+        
+        // Add 'active' class to clicked link
+        this.classList.add('active');
+        });
+    });
+
+    const bar_status = document.querySelectorAll('.bar-status');
+    const bar_name = document.querySelectorAll('.row-body-custom');
+    let state = true;
+
+    document.getElementById("toggleSidebar").addEventListener("click", function () {
+        document.body.classList.toggle("sidebar-collapse");
+    });
+</script>
+</html>
